@@ -62,6 +62,23 @@ static def generateProperty(String placeholder, Collection<DbColumn> columnList,
     }
 }
 
+// 定义Getter Setter生成的方法
+@SuppressWarnings(['DuplicatedCode', 'unused'])
+static def generateGetterSetter(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
+    columnList.forEach {
+        // Getter 方法
+        out.println """${placeholder}"""
+        out.println """${placeholder}public ${it.javaType}  ${it.getJavaGetterName()}(){ """
+        out.println """${placeholder}${T}return  ${it.fieldName}; """
+        out.println """${placeholder}} """
+        // Setter 方法
+        out.println """${placeholder}"""
+        out.println """${placeholder}public void ${it.getJavaSetterName()}(${it.javaType} ${it.fieldName}){ """
+        out.println """${placeholder}${T}this.${it.fieldName} = ${it.fieldName}; """
+        out.println """${placeholder}} """
+    }
+}
+
 // 定义多主键的ID类
 @SuppressWarnings('DuplicatedCode')
 static def generateIDClass(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
@@ -80,23 +97,6 @@ static def generateIDClass(String placeholder, Collection<DbColumn> columnList, 
     out.println """${placeholder}${T}public ID(){ """
     out.println """${placeholder}${T}} """
     out.println """${placeholder}} """
-}
-
-// 定义Getter Setter生成的方法
-@SuppressWarnings('DuplicatedCode')
-static def generateGetterSetter(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
-    columnList.forEach {
-        // Getter 方法
-        out.println """${placeholder}"""
-        out.println """${placeholder}public ${it.javaType}  ${it.getJavaGetterName()}(){ """
-        out.println """${placeholder}${T}return  ${it.fieldName}; """
-        out.println """${placeholder}} """
-        // Setter 方法
-        out.println """${placeholder}"""
-        out.println """${placeholder}public void ${it.getJavaSetterName()}(${it.javaType} ${it.fieldName}){ """
-        out.println """${placeholder}${T}this.${it.fieldName} = ${it.fieldName}; """
-        out.println """${placeholder}} """
-    }
 }
 
 // 设置包名与文件名，确定生成代码的路径

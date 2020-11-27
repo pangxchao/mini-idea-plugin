@@ -74,7 +74,7 @@ static def generateIDClass(String placeholder, Collection<DbColumn> columnList, 
 }
 
 // 定义Getter Setter生成的方法
-@SuppressWarnings('DuplicatedCode')
+@SuppressWarnings(['DuplicatedCode', 'unused'])
 static def generateGetterSetter(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
     columnList.forEach {
         // Getter 方法

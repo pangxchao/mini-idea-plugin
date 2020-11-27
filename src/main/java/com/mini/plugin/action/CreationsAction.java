@@ -61,7 +61,7 @@ public class CreationsAction extends AnAction implements EventListener {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static void generator(List<DbTable> tableList, VirtualFile file) {
-        File outFile = new File(file.getPath(), "create-init-def.sql");
+        File outFile = new File(file.getPath(), "init-create.sql");
         try (OutputStreamWriter writer = new FileWriter(outFile)) {
             tableList.stream().map(DbElement::getParent).filter(Objects::nonNull)
                     .map(DasObject::getName).distinct().forEach(name -> {

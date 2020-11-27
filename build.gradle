@@ -1,6 +1,7 @@
 //noinspection GroovyAssignabilityCheck
 buildscript {
     ext {
+        //noinspection GroovyAssignabilityCheck
         kotlin_version = "1.4.10"
         //noinspection GroovyAssignabilityCheck
         junit_version = "4.13"

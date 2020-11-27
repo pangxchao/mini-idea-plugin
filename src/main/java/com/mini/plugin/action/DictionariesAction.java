@@ -59,7 +59,7 @@ public class DictionariesAction extends AnAction implements EventListener {
     }
 
     private static void generator(List<DbTable> tableList, VirtualFile file) {
-        File outFile = new File(file.getPath(), "dictionary.xlsx");
+        File outFile = new File(file.getPath(), "dictionary.xls");
         try (OutputStream out = new FileOutputStream(outFile)) {
             // 创建工作簿
             HSSFWorkbook workBook = new HSSFWorkbook();
