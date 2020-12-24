@@ -66,7 +66,7 @@ static def generateFindByIdSMethod(String placeholder, DbTable info, Collection<
     columnList.forEach { column ->
         String columnName = column.getColumnName().toUpperCase()
         String name = StringKt.firstUpperCase(column.getFieldName())
-        out.println """${placeholder}${T}${T}it.whereEq(${columnName}, id.get${name}()); """
+        out.println """${placeholder}${T}${T}it.eq(${columnName}, id.get${name}()); """
     }
     out.println """${placeholder}${T}})); """
     out.println """${placeholder}} """
@@ -101,7 +101,6 @@ static def generateExistsByIdSMethod(String placeholder, BuilderWriter out, Stri
 @SuppressWarnings('DuplicatedCode')
 static def generateExistsByIdMMethod(String placeholder, BuilderWriter out, String idParameterAndType, String idParameterNoType) {
     out.println """${placeholder} """
-    out.println """${placeholder}@Override """
     out.println """${placeholder}default boolean existsById(${idParameterAndType}) { """
     out.println """${placeholder}${T}return findById(${idParameterNoType}).isPresent(); """
     out.println """${placeholder}} """
@@ -127,7 +126,6 @@ static def generateDeleteByIdSMethod(String placeholder, DbTable info, Collectio
 @SuppressWarnings('DuplicatedCode')
 static def generateDeleteByIdMMethod(String placeholder, DbTable info, Collection<DbColumn> columnList, BuilderWriter out, String idParameterAndType) {
     out.println """${placeholder} """
-    out.println """${placeholder}@Override """
     out.println """${placeholder}default void deleteById(${idParameterAndType}) { """
     out.println """${placeholder}${T}this.delete(${info.tableName.toUpperCase()}, it->{ """
     columnList.forEach { column ->
