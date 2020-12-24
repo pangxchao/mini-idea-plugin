@@ -183,12 +183,12 @@ public class Settings implements PersistentStateComponent<Settings>, Serializabl
             // 数字类型
             add(new DataType("NUMERIC", "java.math.BigDecimal"));
             add(new DataType("MEDIUMINT", "Integer"));
+            add(new DataType("SMALLINT", "Integer"));
             add(new DataType("INTEGER", "Integer"));
-            add(new DataType("SMALLINT", "Short"));
+            add(new DataType("TINYINT", "Integer"));
             add(new DataType("DECIMAL", "Double"));
             add(new DataType("DOUBLE", "Double"));
             add(new DataType("INT4", "Integer"));
-            add(new DataType("TINYINT", "Byte"));
             add(new DataType("FLOAT", "Float"));
             add(new DataType("BIGINT", "Long"));
             add(new DataType("INT", "Integer"));
