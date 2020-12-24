@@ -16,11 +16,11 @@ List<DbColumn> idColumnList = info.columnList.stream().filter {
     it -> it.isId()
 }.collect(Collectors.toList())
 
-// 获取所有不是主键的字段
-@SuppressWarnings('DuplicatedCode')
-List<DbColumn> otherColumnList = info.columnList.stream().filter {
-    it -> !it.isId()
-}.collect(Collectors.toList())
+//// 获取所有不是主键的字段
+//@SuppressWarnings('DuplicatedCode')
+//List<DbColumn> otherColumnList = info.columnList.stream().filter {
+//    it -> !it.isId()
+//}.collect(Collectors.toList())
 
 // 获取所有需要import语句的字段
 @SuppressWarnings('DuplicatedCode')
@@ -108,12 +108,13 @@ out.println """data class ${info.entityName} constructor( """
 // 多主键时，生成主所在字段的属性
 //noinspection DuplicatedCode
 if (idColumnList != null && idColumnList.size() > 1) {
-    // 主键属性
-    out.println """${T}"""
-    out.println """${T}@Id """
-    out.println """${T}var id:${info.entityName}Id, """
-    // 生成其它字段的属性
-    generateProperty(T, otherColumnList, out, false)
+//    // 主键属性
+//    out.println """${T}"""
+//    out.println """${T}@Id """
+//    out.println """${T}var id:${info.entityName}Id, """
+//    // 生成其它字段的属性
+//    generateProperty(T, otherColumnList, out, false)
+    generateProperty(T, info.columnList, out, false)
 }
 // 单主键或者没有主键时，生成字段属性
 else {
