@@ -126,8 +126,8 @@ static def generateDeleteByIdSMethod(String placeholder, DbTable info, Collectio
 @SuppressWarnings('DuplicatedCode')
 static def generateDeleteByIdMMethod(String placeholder, DbTable info, Collection<DbColumn> columnList, BuilderWriter out, String idParameterAndType) {
     out.println """${placeholder} """
-    out.println """${placeholder}default void deleteById(${idParameterAndType}) { """
-    out.println """${placeholder}${T}this.delete(${info.tableName.toUpperCase()}, it->{ """
+    out.println """${placeholder}default int deleteById(${idParameterAndType}) { """
+    out.println """${placeholder}${T}return this.delete(${info.tableName.toUpperCase()}, it->{ """
     columnList.forEach { column ->
         String columnName = column.getColumnName().toUpperCase()
         out.println """${placeholder}${T}${T}it.whereEq(${columnName}, ${column.getFieldName()}); """
