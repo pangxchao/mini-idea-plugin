@@ -102,8 +102,10 @@ public class GenerateDialog extends JDialog implements EventListener {
 
         // 模板分组选择事件
         groupNameField.addActionListener(e -> {
-            checkBoxList.removeIf(it -> true);
-            templatePanel.removeAll();
+            for (JCheckBox it : checkBoxList) {
+                templatePanel.remove(it);
+            }
+            checkBoxList.clear();
 
             String groupName = (String) groupNameField.getSelectedItem();
             TemplateGroup group = instance.getState().getTemplateGroupMap().get(groupName);
@@ -113,7 +115,9 @@ public class GenerateDialog extends JDialog implements EventListener {
                 templatePanel.add(box);
                 checkBoxList.add(box);
             }));
-
+            // 重新绘制界面
+            templatePanel.repaint();
+            // 重新调整窗口大小
             pack();
         });
         // 默认选中模板

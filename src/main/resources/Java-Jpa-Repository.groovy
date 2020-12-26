@@ -31,13 +31,13 @@ out.setFileName("${info.entityName}Repository.java")
 out.println """package ${info.packageName}.repository; """
 out.println """ """
 out.println """import ${info.packageName}.entity.${info.entityName}; """
-out.println """import org.springframework.data.repository.PagingAndSortingRepository; """
+out.println """import org.springframework.data.jpa.repository.JpaRepository; """
 out.println """import org.springframework.stereotype.Repository; """
 out.println """ """
 
 out.println """ """
 out.println """@Repository("${StringKt.firstLowerCase(info.entityName)}Repository") """
-out.println """public interface ${info.entityName}Repository extends PagingAndSortingRepository<${info.entityName}, ${idType}> {  """
+out.println """public interface ${info.entityName}Repository extends JpaRepository<${info.entityName}, ${idType}> {  """
 out.println """ """
 out.println """} """
 

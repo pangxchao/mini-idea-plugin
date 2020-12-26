@@ -37,7 +37,6 @@ static def generateImports(String placeholder, List<DbColumn> columnList, Builde
     }
 }
 
-
 // 定义属性生成方法
 @SuppressWarnings('DuplicatedCode')
 static def generateProperty(String placeholder, Collection<DbColumn> columnList, BuilderWriter out, boolean hid) {

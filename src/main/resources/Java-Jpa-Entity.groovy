@@ -53,6 +53,23 @@ static def generateProperty(String placeholder, Collection<DbColumn> columnList,
     }
 }
 
+// 定义Getter Setter生成的方法
+@SuppressWarnings(['DuplicatedCode', 'unused'])
+static def generateGetterSetter(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
+    columnList.forEach {
+        // Getter 方法
+        out.println """${placeholder}"""
+        out.println """${placeholder}public ${it.javaType}  ${it.getJavaGetterName()}(){ """
+        out.println """${placeholder}${T}return  ${it.fieldName}; """
+        out.println """${placeholder}} """
+        // Setter 方法
+        out.println """${placeholder}"""
+        out.println """${placeholder}public void ${it.getJavaSetterName()}(${it.javaType} ${it.fieldName}){ """
+        out.println """${placeholder}${T}this.${it.fieldName} = ${it.fieldName}; """
+        out.println """${placeholder}} """
+    }
+}
+
 // 定义多主键的ID类
 @SuppressWarnings('DuplicatedCode')
 static def generateIDClass(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
@@ -73,29 +90,13 @@ static def generateIDClass(String placeholder, Collection<DbColumn> columnList, 
     out.println """${placeholder}} """
 }
 
-// 定义Getter Setter生成的方法
-@SuppressWarnings(['DuplicatedCode', 'unused'])
-static def generateGetterSetter(String placeholder, Collection<DbColumn> columnList, BuilderWriter out) {
-    columnList.forEach {
-        // Getter 方法
-        out.println """${placeholder}"""
-        out.println """${placeholder}public ${it.javaType}  ${it.getJavaGetterName()}(){ """
-        out.println """${placeholder}${T}return  ${it.fieldName}; """
-        out.println """${placeholder}} """
-        // Setter 方法
-        out.println """${placeholder}"""
-        out.println """${placeholder}public void ${it.getJavaSetterName()}(${it.javaType} ${it.fieldName}){ """
-        out.println """${placeholder}${T}this.${it.fieldName} = ${it.fieldName}; """
-        out.println """${placeholder}} """
-    }
-}
-
 // 设置包名与文件名，确定生成代码的路径
 //noinspection GrUnresolvedAccess
 final BuilderWriter out = builderWriter
 out.setPackageName("${info.packageName}.entity")
 out.setFileName("${info.entityName}.java")
 
+// 包名
 out.println """package ${info.packageName}.entity;"""
 // spring jpa 相关包
 out.println """ """
@@ -119,14 +120,12 @@ out.println """@Table(name = "${info.tableName}") """
 out.println """@SuperBuilder(toBuilder = true)"""
 out.println """public class ${info.entityName} implements Serializable { """
 
-// 多主键生成主键类
-if (idColumnList != null && idColumnList.size() > 1) {
-    generateIDClass(T, idColumnList, out)
-}
-
 // 多主键时，生成主所在字段的属性
 //noinspection DuplicatedCode
 if (idColumnList != null && idColumnList.size() > 1) {
+    // 多主键生成主键类
+    generateIDClass(T, idColumnList, out)
+
     // 主键属性
     out.println """${T}"""
     out.println """${T}@Id """
@@ -161,6 +160,7 @@ out.println """${T}} """
 //    // 生成其它字段的Getter Setter 方法
 //    generateGetterSetter(T, otherColumnList, out)
 //}
+//
 //// 单主键或者没有主键时，生成字段属性
 //else {
 //    generateGetterSetter(T, info.columnList, out)

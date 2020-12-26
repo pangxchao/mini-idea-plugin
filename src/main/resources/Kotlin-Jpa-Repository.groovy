@@ -1,3 +1,4 @@
+import com.mini.plugin.extension.StringKt
 import com.mini.plugin.state.DbColumn
 import com.mini.plugin.state.DbTable
 import com.mini.plugin.util.BuilderWriter
@@ -34,12 +35,12 @@ out.println """package ${info.packageName}.repository """
 // 导入包
 out.println """ """
 out.println """import ${info.packageName}.entity.*; """
-out.println """import org.springframework.data.repository.PagingAndSortingRepository; """
+out.println """import org.springframework.data.jpa.repository.JpaRepository; """
 out.println """import org.springframework.stereotype.Repository; """
 out.println """ """
 
-
-out.println """interface ${info.entityName}Repository : PagingAndSortingRepository<${info.entityName}, ${idType}> {  """
+out.println """@Repository("${StringKt.firstLowerCase(info.entityName)}Repository") """
+out.println """interface ${info.entityName}Repository : JpaRepository<${info.entityName}, ${idType}> {  """
 out.println """ """
 out.println """} """
 
