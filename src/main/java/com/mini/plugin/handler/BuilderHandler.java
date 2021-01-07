@@ -191,14 +191,7 @@ public final class BuilderHandler extends GenerateMembersHandlerBase /* implemen
         }
 
         protected void addElement(@NotNull PsiClass aClass, @NotNull PsiMember psiMember) {
-            final PsiMethod method = BuilderHandler.getFirstMethod(aClass);
-            final PsiClassBuilder builder = PsiClassBuilder.builder(aClass);
-            if(method!=null || builder.build().getRBrace() != null) {
-                builder.addBefore(psiMember, it -> method != null ? //
-                        method : it.getRBrace());
-                return;
-            }
-            builder.add(psiMember);
+            PsiClassBuilder.builder(aClass).add(psiMember);
         }
     }
 
