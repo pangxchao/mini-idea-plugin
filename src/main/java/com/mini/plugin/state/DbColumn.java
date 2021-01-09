@@ -3,11 +3,13 @@ package com.mini.plugin.state;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.util.DasUtil;
+import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,6 +20,9 @@ import static java.util.Objects.hash;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 public class DbColumn implements AbstractData<DbColumn>, Serializable {
+    private static final Map<String, String> JNT = new HashMap<>();
+    private static final Map<String, String> KT = new HashMap<>();
+    private static final Map<String, String> JT = new HashMap<>();
     @Transient
     @JsonIgnore
     private com.intellij.database.model.DasColumn column;
@@ -215,7 +220,7 @@ public class DbColumn implements AbstractData<DbColumn>, Serializable {
                 .orElse(new DataType());
     }
 
-    private String getSourceType() {
+    private java.lang.String getSourceType() {
         String type = getDataType().getJavaType();
         String[] types = type.split("[.]");
         return types[types.length - 1];
@@ -223,18 +228,32 @@ public class DbColumn implements AbstractData<DbColumn>, Serializable {
 
     @Transient
     @JsonIgnore
+    public String getKotlinGenericType() {
+        String t = this.getSourceType();
+        return KT.getOrDefault(t, t);
+    }
+
+    @Transient
+    @JsonIgnore
     public String getKotlinType() {
-        String type = getSourceType();
-        return "Integer".equals(type)
-                ? "Int" : type;
+        String t = this.getSourceType();
+        return KT.getOrDefault(t, t);
+    }
+
+    @Transient
+    @JsonIgnore
+    public String getJavaGenericType() {
+        String t = this.getSourceType();
+        return JNT.getOrDefault(t, t);
     }
 
     @Transient
     @JsonIgnore
     public String getJavaType() {
-        String type = getSourceType();
-        return "Int".equals(type) ?
-                "Integer" : type;
+        final String t = this.getSourceType();
+        return DbColumn.this.isNotNull() ? //
+                JT.getOrDefault(t, t) :  //
+                JNT.getOrDefault(t, t);
     }
 
     @Transient
@@ -287,6 +306,72 @@ public class DbColumn implements AbstractData<DbColumn>, Serializable {
 
     @Override
     public int hashCode() {
+
         return hash(column, databaseType, columnName, fieldName, comment, id, auto, notNull, createdDate, createdBy, modifiedDate, modifiedBy, version);
+    }
+
+    static {
+        // Java不为空Boolean值处理
+        JT.put("Boolean", "boolean");
+        JT.put("Bool", "boolean");
+        JT.put("bool", "boolean");
+        // Java不为空Char值处理
+        JT.put("Character", "char");
+        JT.put("Char", "char");
+        // Java不为空Double值处理
+        JT.put("Double", "double");
+        // Java不为空Float值处理
+        JT.put("Float", "float");
+        // Java不为空Integer值处理
+        JT.put("Integer", "int");
+        JT.put("Int", "int");
+        // Java不为空Short值处理
+        JT.put("Short", "short");
+        // Java不为空Long值处理
+        JT.put("Long", "long");
+        // Java不为空Byte值处理
+        JT.put("Byte", "byte");
+
+        // Java可为空Boolean值处理
+        JNT.put("boolean", "Boolean");
+        JNT.put("Bool", "Boolean");
+        JNT.put("bool", "Boolean");
+        // Java可为空Char值处理
+        JNT.put("Char", "Character");
+        JNT.put("char", "Character");
+        // Java可为空Integer值处理
+        JNT.put("Int", "Integer");
+        JNT.put("int", "Integer");
+        // Java可为空Double值处理
+        JNT.put("double", "Double");
+        // Java可为空Float值处理
+        JNT.put("float", "Float");
+        // Java可为空Short值处理
+        JNT.put("short", "Short");
+        // Java可为空Long值处理
+        JNT.put("long", "Long");
+        // Java可为空Byte值处理
+        JNT.put("byte", "Byte");
+
+        //  Kotlin Boolean值处理
+        KT.put("boolean", "Boolean");
+        KT.put("Bool", "Boolean");
+        KT.put("bool", "Boolean");
+        // Kotlin Char值处理
+        KT.put("Character", "Char");
+        KT.put("char", "Char");
+        // Kotlin Double值处理
+        KT.put("double", "Double");
+        // Kotlin Float值处理
+        KT.put("float", "Float");
+        // Kotlin Integer值处理
+        KT.put("Integer", "Int");
+        KT.put("int", "Int");
+        // Kotlin Short值处理
+        KT.put("short", "Short");
+        // Kotlin Long值处理
+        KT.put("long", "Long");
+        // Kotlin Byte值处理
+        KT.put("byte", "Byte");
     }
 }

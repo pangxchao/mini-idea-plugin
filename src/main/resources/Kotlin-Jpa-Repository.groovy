@@ -19,7 +19,7 @@ List<DbColumn> idColumnList = info.columnList.stream().filter {
 @SuppressWarnings('DuplicatedCode')
 String idType = idColumnList.size() > 1 ? "${info.entityName}Id" :
         idColumnList.stream().findAny().map {
-            it.javaType
+            it.kotlinGenericType
         }.orElse("String")
 
 // 设置包名与文件名，确定生成代码的路径

@@ -30,7 +30,7 @@ String idParameterAndType = idColumnList.stream().map {
 // 获取ID字段的类型
 @SuppressWarnings('DuplicatedCode')
 String idType = idColumnList.size() > 1 ? "Any" : idColumnList.stream().findAny().map {
-    it.javaType
+    it.kotlinGenericType
 }.orElse("String")
 
 // 获取父类Class名称
